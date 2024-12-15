@@ -103,23 +103,26 @@ main:
     push ax
     push bx
 
+ret
 
 
 addition:
   add al, bl 
    
+ret
+
 substraction:
   sub al, bl
-
+ret
 
 multi:
     mul bl ; implicitely multiplies AX with BL and stores its result in AX
 
-
+ret
 
 division:
     div bl
-             
+ret             
 
 
 
@@ -140,5 +143,7 @@ print_func:
     loop print_loop
     push ax
     mov dl, ' '
-    int 21h    
-```
+    int 21h      
+    pop ax
+    ret
+   ```
