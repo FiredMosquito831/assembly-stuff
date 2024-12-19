@@ -300,7 +300,7 @@ int 21h
 ret
 ```
 
-### Read 4 chars check if they are digits then compose the number and store its total value in hex (ex: 1 2 3 4, all digits, stored number is 1234 as hex 04D2h)
+### Read 4 chars check if they are digits then compose the number and store its total value in hex (ex: 1 2 3 4, all digits, stored number is 1234 as hex 04D2h) and print it
 
 ```asm
 
@@ -455,8 +455,46 @@ ret
 
 
 conv_to_hex:
-call create_number
+call create_number ; after we create the number and store it into cx we have to begin printing its hex
 
+; in order to print hex values we must check wether we actually have a digit or not and if we have a digit we print and do modulo 30 to get the digits (30-39 0-9 OR modulo 40 if it is above 41-46 hex)
+; we will print hex by hex (1 at a time so 4 bits at a time) we check if 30 + val is bigger than 39 if not we print first digit else we print starting from 41 + val - 10 (41 is A, 41 + B - 10 = 41 + 11 - 10 = 42 = B)
+; we extract the char from cx left to right 1 by 1
+; in our case we have 1 hex at a time so 0-F, we check if the hex is <A if is we do 30 + val else 41 + val - 10
+mov bx, cx                                                                                                 
+mov cx, 4
+print_loop:
+push bx
+and bx, 0xF000h
+shr bx, 12 ; we move the right most value on the left to start the comparison
+
+check_below_9:
+cmp bx, 0x0009h
+
+jb below_9_digit
+; else we check for hex dig
+mov dl, 'A'
+add dl, bl
+sub dl, 10
+jmp refresh
+
+below_9_digit:
+mov dl, '0'
+add dl, bl
+
+refresh:
+pop bx
+shl bx, 4
+
+mov ah, 2
+int 21h
+loop print_loop  ; printed in hex
+mov dl, 'h'
+int 21h
+xor ax, ax
+xor bx, bx
+xor cx, cx
+xor dx, dx
 ret
 
 create_number:      ; we will create the number in the bx registry with the help of cx as they now free to use
@@ -515,6 +553,7 @@ mul dx
 add cx, ax
 ret
 
+; IT WORKS IT STORES INSIDE OF CX THE WANTED VALUE   
 ; IT WORKS IT STORES INSIDE OF CX THE WANTED VALUE
 ```
 
