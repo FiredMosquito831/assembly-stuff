@@ -21,14 +21,14 @@ org 100h
 
 
 
-my_array db 1, 2, 3, 4, 5, 6, 7, 8 ,9, 10 
-sum db 0
+my_array db 0x12h, 0xAAh, 0x13h, 0xABh, 0x14h, 0xACh, 0x15h, 0xADh, 0x16h, 0xAFh 
+sum dw 0
 
 ;;;;.code  ; mark the begining of the code where instructions are written
 ; setup SI and loop
 mov si, 0  ; the starting index is 0
 ; now we can start playing with the elements
-mov cl, 10
+mov cl, 5 ; len / 2
 ; we will store the sum in dx
 xor dx, dx
 xor ax, ax
@@ -41,8 +41,9 @@ mov al, [my_array + si]
 add dx, ax
 and dx, 0x00ffh
 inc si
+inc si
 loop sum_loop
-mov sum, dl
+mov sum, dx
 
 mov ah, 4Ch      ; DOS interrupt for termination
 int 21h          ; Terminate program
