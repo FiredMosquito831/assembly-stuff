@@ -238,3 +238,57 @@ These jumps rely on the **CX** register and are used for loops:
 Some assemblers allow short forms for conditional jumps, such as:
 
 - **JCXZ**: Jump if the **CX** register is 0.
+
+
+
+
+# Common 8086 Assembly Instructions
+
+## Mathematical Operations
+### Addition
+- **ADD destination, source** – Adds two values.  
+  Example: `ADD AX, BX`
+- **ADC destination, source** – Adds two values with the carry flag.
+
+### Subtraction
+- **SUB destination, source** – Subtracts two values.  
+  Example: `SUB AX, BX`
+- **SBB destination, source** – Subtracts two values with the borrow flag.
+
+### Multiplication
+- **MUL source** – Unsigned multiply (default operand: `AL` or `AX`).  
+  Example: `MUL BL` (multiplies `AL` by `BL`).
+
+### Division
+- **DIV source** – Unsigned divide (quotient in `AL` or `AX`, remainder in `AH`).  
+  Example: `DIV BL` (divides `AX` by `BL`).
+
+### Increment/Decrement
+- **INC destination** – Increment by 1.  
+  Example: `INC AX`
+- **DEC destination** – Decrement by 1.  
+  Example: `DEC CX`
+
+### Logical Operations
+- **AND destination, source** – Bitwise AND.  
+- **OR destination, source** – Bitwise OR.  
+- **XOR destination, source** – Bitwise XOR.  
+- **NOT destination** – Bitwise NOT.
+
+---
+
+## Storing Values
+### Move Instruction
+- **MOV destination, source** – Moves a value to a register or memory.  
+  Examples:  
+  - `MOV AX, 1234H` (stores `1234H` in `AX`).  
+  - `MOV [SI], AL` (stores `AL` in memory pointed by `SI`).
+
+### Stack Operations
+- **PUSH source** – Pushes a value onto the stack.  
+- **POP destination** – Pops a value from the stack into a register.  
+- **POPA** – Pops the entire stack.  
+  Example:  
+  ```assembly
+  PUSH AX  
+  POP BX  
